@@ -1,9 +1,11 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class SwerveDrive {
     private SwerveModule[] modules;
@@ -19,7 +21,7 @@ public class SwerveDrive {
         int[] steeringMotorPorts = {5, 6, 7, 8};
 
         for (int i = 0; i < 4; i++) {
-            modules[i] = new SwerveModule(angles[i], lengths[i], new CANSparkMax(driveMotorPorts[i], MotorType.kBrushed), new CANSparkMax(steeringMotorPorts[i], MotorType.kBrushed));
+            modules[i] = new SwerveModule(angles[i], lengths[i], new CANSparkMax(driveMotorPorts[i], MotorType.kBrushed), new VictorSPX(steeringMotorPorts[i], MotorType.kBrushed));
         }
     }
 
