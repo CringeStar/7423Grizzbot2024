@@ -1,13 +1,9 @@
 package frc.robot;
 
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix6.hardware.CANcoder;
-
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
 
 @SuppressWarnings("removal")
 public class SwerveModule {
@@ -15,8 +11,6 @@ public class SwerveModule {
     private double length;
     private CANSparkMax driveMotor;
     private WPI_VictorSPX steeringMotor;
-    private CANcoder encoder;
-    private CANPIDController pidController;
 
     // PID constants - tune these as needed
     private static final double kP = 0.1;
@@ -33,15 +27,17 @@ public class SwerveModule {
         this.length = length;
         this.driveMotor = driveMotor;
         this.steeringMotor = steeringMotor;
-        this.encoder = steeringMotor.getEncoder();
-        this.pidController = steeringMotor.getPIDController();
-
-        // Configure PID controller
-        pidController.setP(kP);
-        pidController.setI(kI);
-        pidController.setD(kD);
-        pidController.setFF(kF);
-        pidController.setOutputRange(-1.0, 1.0); // Adjust output range as needed
+        
+        // Configure CANcoder feedback for the steering motor
+        steeringMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0, 0);
+        
+        // You will need to configure PID control for the VictorSPX manually
+        // Here's an example setup, you might need to adjust it according to your needs
+        steeringMotor.config_kP(0, kP);
+        steeringMotor.config_kI(0, kI);
+        steeringMotor.config_kD(0, kD);
+        steeringMotor.config_kF(0, kF);
+        // Adjust other settings as necessary
     }
 
     public void setDriveSpeed(double speed) {
@@ -53,25 +49,38 @@ public class SwerveModule {
         // Ensure angle is within limits
         angle = Math.min(Math.max(angle, minAngle), maxAngle);
         
-        // Calculate target position based on offset
-        double targetPosition = angle + angleOffset;
+        // Convert angle to position based on your encoder's resolution and gear ratio
+        double position = angleToPosition(angle);
 
-        // Wrap angle to [-180, 180] range
-        while (targetPosition > 180) {
-            targetPosition -= 360;
-        }
-        while (targetPosition < -180) {
-            targetPosition += 360;
-        }
-
-        // Set setpoint for PID controller
-        pidController.setReference(targetPosition, ControlType.kPosition);
+        // Set setpoint for position control (PID) on the VictorSPX motor
+        steeringMotor.set(ControlMode.Position, position);
     }
 
     public double getSteeringAngle() {
-        // Get current steering angle from encoder
-        return encoder.getPosition();
+        // Read the position from the CANcoder and convert it to angle
+        double position = steeringMotor.getSelectedSensorPosition(0);
+        double angle = position * (360.0 / 4096.0); // Assuming 4096 counts per revolution
+        angle -= angleOffset; // Subtract offset
+
+        // Normalize angle to [-180, 180] range
+        while (angle > 180) {
+            angle -= 360;
+        }
+        while (angle < -180) {
+            angle += 360;
+        }
+
+        return angle;
     }
+
+    // Helper method to convert desired angle to encoder position
+    private double angleToPosition(double angle) {
+        // Calculate position based on your encoder's resolution and gear ratio
+        // For example, if you have a 360-degree CANcoder with 4096 counts per revolution:
+        double position = (angle / 360.0) * 4096.0;
+        return position;
+    }
+
 
     public double getLength(){
         return length;
