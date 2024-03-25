@@ -1,46 +1,33 @@
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-    private SwerveDrive swerveDrive;
-    private GameController controller;
-    private FlywheelController flywheelController;
+    private final SwerveDriveSubsystem swerveDrive = new SwerveDriveSubsystem();
+    private final XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_PORT);
 
     @Override
     public void robotInit() {
-        swerveDrive = new SwerveDrive();
-        controller = new GameController(0); //conteoller port
-        CANSparkMax flywheelMotor1 = new CANSparkMax(0, MotorType.kBrushed); //update
-        CANSparkMax flywheelMotor2 = new CANSparkMax(0, MotorType.kBrushed); //update
-        Flywheel flywheel = new Flywheel(flywheelMotor1, flywheelMotor2);
-        flywheelController = new FlywheelController(flywheel);
-
     }
+
 
     @Override
     public void teleopPeriodic() {
-        double driveSpeed = controller.getDriveSpeed();
-        double driveRotation = controller.getDriveRotation();
-        double strafeSpeed = controller.getStrafeSpeed();
-        double flywheelSpeed = flywheelController.getFlywheelSpeed();
+        double forward = -driverController.getLeftY() * Constants.MAX_DRIVE_SPEED; // Inverting Y for forward
+        double strafe = driverController.getLeftX() * Constants.MAX_DRIVE_SPEED;
+        double rotation = driverController.getRightX() * Constants.MAX_TURN_SPEED;
 
-        SmartDashboard.putNumber("Drive Speed", driveSpeed);
-        SmartDashboard.putNumber("Drive Rotation", driveRotation);
-        SmartDashboard.putNumber("Strafe Speed", strafeSpeed);
-        SmartDashboard.putNumber("Flywheel Speed", flywheelSpeed);
+        swerveDrive.drive(forward, strafe, rotation);
 
-        swerveDrive.drive(driveSpeed, driveRotation, strafeSpeed);
-
-        if (controller.isFlywheelButtonPressed()) {
-            flywheelController.setFlywheelSpeed(5000); // Set desired flywheel speed
-        } else {
-            flywheelController.setFlywheelSpeed(0); // Stop the flywheel if button is released
-        }
+        // Optionally, output current pose to SmartDashboard
+        SmartDashboard.putNumber("X Position", swerveDrive.getPose().getX());
+        SmartDashboard.putNumber("Y Position", swerveDrive.getPose().getY());
+        SmartDashboard.putNumber("Heading", swerveDrive.getPose().getRotation().getDegrees());
     }
+
+    // Optionally include autonomousPeriodic, disabledInit, etc.
 }
+
 

@@ -1,87 +1,56 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.sensors.CANCoder;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+
+@SuppressWarnings("removal")
 
 public class SwerveModule {
-    private double angleOffset;
-    private double length;
     private CANSparkMax driveMotor;
-    private WPI_VictorSPX steeringMotor;
+    private WPI_VictorSPX turningMotor;
+    private CANCoder canCoder;
 
-    // PID constants - tune these as needed
-    private static final double kP = 0.1;
-    private static final double kI = 0.0;
-    private static final double kD = 0.0;
-    private static final double kF = 0.0;
+    public SwerveModule(int driveMotorID, int turningMotorID, int canCoderID) {
+        driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
+        turningMotor = new WPI_VictorSPX(turningMotorID);
+        canCoder = new CANCoder(canCoderID);
+    }
 
-    // Steering limits - adjust these as needed
-    private static final double minAngle = -180.0;
-    private static final double maxAngle = 180.0;
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(driveMotor.getEncoder().getVelocity(), Rotation2d.fromDegrees(canCoder.getAbsolutePosition()));
+    }
 
-    public SwerveModule(double angleOffset, double length, CANSparkMax driveMotor, WPI_VictorSPX steeringMotor) {
-        this.angleOffset = angleOffset;
-        this.length = length;
-        this.driveMotor = driveMotor;
-        this.steeringMotor = steeringMotor;
+    public void setDesiredState(SwerveModuleState desiredState) {
+        // Use SwerveModuleState.optimize() to get the state with the shortest rotation
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(canCoder.getAbsolutePosition()));
         
-        // Configure CANcoder feedback for the steering motor
-        steeringMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0, 0);
-        
-        // You will need to configure PID control for the VictorSPX manually
-        // Here's an example setup, you might need to adjust it according to your needs
-        steeringMotor.config_kP(0, kP);
-        steeringMotor.config_kI(0, kI);
-        steeringMotor.config_kD(0, kD);
-        steeringMotor.config_kF(0, kF);
-        // Adjust other settings as necessary
+        setSpeeds(state.speedMetersPerSecond, state.angle.getRadians());
     }
 
-    public void setDriveSpeed(double speed) {
-        // Set drive motor speed
-        driveMotor.set(speed);
-    }
+        public void setSpeeds(double driveSpeed, double targetAngleDegrees) {
+        // Set the drive motor speed directly
+        driveMotor.set(driveSpeed);
 
-    public void setSteeringAngle(double angle) {
-        // Ensure angle is within limits
-        angle = Math.min(Math.max(angle, minAngle), maxAngle);
-        
-        // Convert angle to position based on your encoder's resolution and gear ratio
-        double position = angleToPosition(angle);
+        // Convert the target angle to a format suitable for the turning motor
+        // This could be a position in encoder ticks or a percentage output, depending on your setup
+        double currentAngleDegrees = canCoder.getAbsolutePosition();
+        double angleDifference = targetAngleDegrees - currentAngleDegrees;
 
-        // Set setpoint for position control (PID) on the VictorSPX motor
-        steeringMotor.set(ControlMode.Position, position);
-    }
+        // Normalize the angle difference to [-180, 180) for minimal movement
+        angleDifference = ((angleDifference + 180) % 360 + 360) % 360 - 180;
 
-    public double getSteeringAngle() {
-        // Read the position from the CANcoder and convert it to angle
-        double position = steeringMotor.getSelectedSensorPosition(0);
-        double angle = position * (360.0 / 4096.0); // Assuming 4096 counts per revolution
-        angle -= angleOffset; // Subtract offset
+        // Assuming the turning mechanism is direct (1:1 ratio) and that one full motor rotation corresponds to 360 degrees
+        // The below conversion might need adjustments based on your gearing ratio or encoder resolution
+        double turnOutput = angleDifference / 360;
 
-        // Normalize angle to [-180, 180] range
-        while (angle > 180) {
-            angle -= 360;
-        }
-        while (angle < -180) {
-            angle += 360;
-        }
-
-        return angle;
-    }
-
-    // Helper method to convert desired angle to encoder position
-    private double angleToPosition(double angle) {
-        // Calculate position based on your encoder's resolution and gear ratio
-        // For example, if you have a 360-degree CANcoder with 4096 counts per revolution:
-        double position = (angle / 360.0) * 4096.0;
-        return position;
-    }
-
-
-    public double getLength(){
-        return length;
+        // Set the turning motor speed or position
+        // If your setup involves position control (e.g., to a specific encoder tick count), you'll need to convert the desired angle difference to ticks
+        turningMotor.set(ControlMode.PercentOutput, turnOutput);
     }
 }
+

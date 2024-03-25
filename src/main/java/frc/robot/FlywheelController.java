@@ -11,8 +11,8 @@ public class FlywheelController {
         flywheel.setSpeed(speed);
     }
 
-    public double getFlywheelSpeed(){
-        return flywheel.getSpeed();
-    }
+    // public double getFlywheelSpeed(){
+    //     return flywheel.getSpeed();
+    // }
 
 }
