@@ -27,8 +27,8 @@ public class FlywheelSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedforward;
 
     public FlywheelSubsystem() {
-        motor1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-        motor2 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor1 = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor2 = new CANSparkMax(14, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         pidController1 = new PIDController(kP, kI, kD);
         pidController1.setTolerance(50); // You can adjust this tolerance as needed
