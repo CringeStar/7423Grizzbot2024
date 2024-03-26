@@ -25,6 +25,10 @@ public class SwerveModule {
         return new SwerveModuleState(driveMotor.getEncoder().getVelocity(), Rotation2d.fromDegrees(canCoder.getAbsolutePosition()));
     }
 
+    // public SwerveModulePosition getPosition(){
+    //     return new SwerveModulePosition(canCoder.getPosition(), );
+    // }
+
     public void setDesiredState(SwerveModuleState desiredState) {
         // Use SwerveModuleState.optimize() to get the state with the shortest rotation
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(canCoder.getAbsolutePosition()));
