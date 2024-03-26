@@ -1,18 +1,18 @@
-package frc.robot;
+// package frc.robot;
 
-public class FlywheelController {
-    private Flywheel flywheel;
+// public class FlywheelController {
+//     private Flywheel flywheel;
 
-    public FlywheelController(Flywheel flywheel) {
-        this.flywheel = flywheel;
-    }
+//     public FlywheelController(Flywheel flywheel) {
+//         this.flywheel = flywheel;
+//     }
 
-    public void setFlywheelSpeed(double speed) {
-        flywheel.setSpeed(speed);
-    }
+//     public void setFlywheelSpeed(double speed) {
+//         flywheel.setSpeed(speed);
+//     }
 
-    // public double getFlywheelSpeed(){
-    //     return flywheel.getSpeed();
-    // }
+//     // public double getFlywheelSpeed(){
+//     //     return flywheel.getSpeed();
+//     // }
 
-}
+// }

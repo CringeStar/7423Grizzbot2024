@@ -33,11 +33,11 @@ public class SwerveModule {
         // Use SwerveModuleState.optimize() to get the state with the shortest rotation
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(canCoder.getPosition()));
         
-        if(this.driveMotor.getDeviceId() != 7) {
-            setSpeeds(state.speedMetersPerSecond, state.angle.getRadians());
-        } else if (this.driveMotor.getDeviceId() == 7) {
-            setSpeeds(state.speedMetersPerSecond*-1, state.angle.getRadians()); //reverse back left neo
+        if(this.driveMotor.getDeviceId() == 7) {
+            setSpeeds(state.speedMetersPerSecond*-1, state.angle.getRadians());  //reverse back left neo
+            return;
         }
+        setSpeeds(state.speedMetersPerSecond, state.angle.getRadians());
     }
 
         public void setSpeeds(double driveSpeed, double targetAngleDegrees) {
@@ -54,7 +54,7 @@ public class SwerveModule {
 
         // Assuming the turning mechanism is direct (1:1 ratio) and that one full motor rotation corresponds to 360 degrees
         // The below conversion might need adjustments based on your gearing ratio or encoder resolution
-        double turnOutput = angleDifference / 360 * .05;
+        double turnOutput = angleDifference / 360 * 0.2421;
 
         // Set the turning motor speed or position
         // If your setup involves position control (e.g., to a specific encoder tick count), you'll need to convert the desired angle difference to ticks

@@ -31,7 +31,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void drive(double forward, double strafe, double rotation) {
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(forward, strafe, rotation, Rotation2d.fromDegrees(getHeading()));
+        ChassisSpeeds speeds = ChassisSpeeds.fromRobotRelativeSpeeds(forward, strafe, rotation, Rotation2d.fromDegrees(getHeading()));
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
     
         // Optimizing all module states based on constraints

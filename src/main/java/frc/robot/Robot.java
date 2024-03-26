@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
     private final SwerveDriveSubsystem swerveDrive = new SwerveDriveSubsystem();
     private final XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_PORT);
-    private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
+    // private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
 
     @Override
     public void robotInit() {
@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 
 
 
-        flywheel.shoot(flywheelDir, flywheelOff);
+        // flywheel.shoot(flywheelDir, flywheelOff);
         swerveDrive.drive(forward, strafe, rotation);
         SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
