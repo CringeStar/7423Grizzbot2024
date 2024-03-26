@@ -40,9 +40,7 @@ public class Robot extends TimedRobot {
 
         // flywheel.shoot(flywheelDir, flywheelOff);
         swerveDrive.drive(forward, strafe, rotation);
-                SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
-                
-
+        SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
 
     // Optionally include autonomousPeriodic, disabledInit, etc.

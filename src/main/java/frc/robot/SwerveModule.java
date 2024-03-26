@@ -33,7 +33,11 @@ public class SwerveModule {
         // Use SwerveModuleState.optimize() to get the state with the shortest rotation
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(canCoder.getPosition()));
         
-        setSpeeds(state.speedMetersPerSecond, state.angle.getRadians());
+        if(this.driveMotor.getDeviceId() != 7) {
+            setSpeeds(state.speedMetersPerSecond, state.angle.getRadians());
+        } else if (this.driveMotor.getDeviceId() == 7) {
+            setSpeeds(state.speedMetersPerSecond*-1, state.angle.getRadians()); //reverse back left neo
+        }
     }
 
         public void setSpeeds(double driveSpeed, double targetAngleDegrees) {
