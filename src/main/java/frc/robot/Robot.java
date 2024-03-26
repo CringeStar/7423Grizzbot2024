@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
     private final SwerveDriveSubsystem swerveDrive = new SwerveDriveSubsystem();
@@ -39,6 +40,9 @@ public class Robot extends TimedRobot {
 
         // flywheel.shoot(flywheelDir, flywheelOff);
         swerveDrive.drive(forward, strafe, rotation);
+                SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
+                
+
     }
 
     // Optionally include autonomousPeriodic, disabledInit, etc.

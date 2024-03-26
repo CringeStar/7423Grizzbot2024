@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
     private final SwerveModule frontLeft = new SwerveModule(Constants.DRIVE_MOTOR_IDS[0], Constants.TURNING_MOTOR_IDS[0], Constants.CANCODER_IDS[0]);
@@ -21,6 +22,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     public SwerveDriveSubsystem() {
     }
 
+    public void log(){
+        SmartDashboard.putString("fl encoder", frontLeft.getState().toString());
+        SmartDashboard.putString("fr encoder", frontRight.getState().toString());
+        SmartDashboard.putString("br encoder", backRight.getState().toString());
+        SmartDashboard.putString("bl encoder", backLeft.getState().toString());
+
+    }
+
     public void drive(double forward, double strafe, double rotation) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(forward, strafe, rotation, Rotation2d.fromDegrees(getHeading()));
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
@@ -31,6 +40,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         }
     
         // Setting desired states for each module
+        log();
         frontLeft.setDesiredState(moduleStates[0]);
         frontRight.setDesiredState(moduleStates[1]);
         backLeft.setDesiredState(moduleStates[2]);

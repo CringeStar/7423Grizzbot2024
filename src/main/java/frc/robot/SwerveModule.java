@@ -22,7 +22,7 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(driveMotor.getEncoder().getVelocity(), Rotation2d.fromDegrees(canCoder.getAbsolutePosition()));
+        return new SwerveModuleState(driveMotor.getEncoder().getVelocity(), Rotation2d.fromDegrees(canCoder.getPosition()));
     }
 
     // public SwerveModulePosition getPosition(){
@@ -31,7 +31,7 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState) {
         // Use SwerveModuleState.optimize() to get the state with the shortest rotation
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(canCoder.getAbsolutePosition()));
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(canCoder.getPosition()));
         
         setSpeeds(state.speedMetersPerSecond, state.angle.getRadians());
     }
@@ -42,7 +42,7 @@ public class SwerveModule {
 
         // Convert the target angle to a format suitable for the turning motor
         // This could be a position in encoder ticks or a percentage output, depending on your setup
-        double currentAngleDegrees = canCoder.getAbsolutePosition();
+        double currentAngleDegrees = canCoder.getPosition();
         double angleDifference = targetAngleDegrees - currentAngleDegrees;
 
         // Normalize the angle difference to [-180, 180) for minimal movement
@@ -50,7 +50,7 @@ public class SwerveModule {
 
         // Assuming the turning mechanism is direct (1:1 ratio) and that one full motor rotation corresponds to 360 degrees
         // The below conversion might need adjustments based on your gearing ratio or encoder resolution
-        double turnOutput = angleDifference / 360;
+        double turnOutput = angleDifference / 360 * .05;
 
         // Set the turning motor speed or position
         // If your setup involves position control (e.g., to a specific encoder tick count), you'll need to convert the desired angle difference to ticks
