@@ -40,23 +40,23 @@ public class Robot extends TimedRobot {
         boolean flywheelRampUp = driverController.getRightBumper();
         boolean flywheelOff = driverController.getBButton();
 
-        // boolean ampDir = ;
-        // if() {
-        //     ampDir = !ampDir;
-        // }
-        // boolean ampOff = ;
+        boolean ampDir = driverController.getAButton();
+        if(driverController.getXButton()) {
+            ampDir = !ampDir;
+        }
+        boolean ampOff = !(driverController.getXButton()) && !(driverController.getAButton());
 
 
         
 
-        boolean climber = driverController.getXButton();
+        boolean climber = driverController.getYButton();
 
 
         if(cancelGyro) {
             RobotContainer.getInstance().getPigeonIMU().setYaw(0);
         }
         flywheel.shoot(flywheelDir, flywheelOff, flywheelRampUp);
-        // amp.shoot(ampDir, ampOff);
+        amp.shoot(ampDir, ampOff);
         swerveDrive.drive(forward, strafe, rotation);
         SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
