@@ -16,6 +16,6 @@ public class AmpSubsystem extends SubsystemBase {
     public void climb() {
         motor.set(ControlMode.PercentOutput, 1);
         Thread.sleep(10000); //assuming it takes 10 seconds fot climber to finish
-        motor.set(ControlMode.PercentOutput, 1);
+        motor.set(ControlMode.PercentOutput, 0);
     }
 }
