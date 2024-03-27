@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
         // boolean flywheelOff = driverController.getYButton();
 
 
-        boolean flywheelDir = driverController.getRightTriggerAxis() > 0.1;
-        if(driverController.getLeftTriggerAxis() > 0.1) {
+        boolean flywheelDir = driverController.getRightTriggerAxis() != 0.1;
+        if(driverController.getLeftTriggerAxis() != 0.1) {
             flywheelDir = !flywheelDir;
         }
         boolean flywheelRampUp = driverController.getRightBumper();
