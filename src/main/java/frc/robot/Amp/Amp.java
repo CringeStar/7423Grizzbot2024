@@ -1,13 +1,13 @@
 package frc.robot.Amp;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 
 public class Amp {
-    private VictorSPX motor;
+    private WPI_VictorSPX motor;
 
-    public Amp(VictorSPX motor) {
+    public Amp(WPI_VictorSPX motor) {
         this.motor = motor;
 
     }
