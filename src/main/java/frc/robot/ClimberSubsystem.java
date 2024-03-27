@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-public class AmpSubsystem extends SubsystemBase {
+public class ClimberSubsystem extends SubsystemBase {
 
 
     private WPI_VictorSPX motor;
 
-    public AmpSubsystem() {
+    public ClimberSubsystem() {
         motor = new WPI_VictorSPX(16);
     }
 
