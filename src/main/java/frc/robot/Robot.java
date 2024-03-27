@@ -20,6 +20,19 @@ public class Robot extends TimedRobot {
     }
 
     @Override
+    public void autonomousPeriodic() {
+        //move to speaker
+        //ram againt it
+        //wait like 1 sec
+        //ramp up flywheel
+        //wait 1 sec
+        //shoot flywheel
+        //wait 1 sec 
+        //turn off flywheel
+        //move away
+    }
+    
+    @Override
     public void robotInit() {
     }
 
