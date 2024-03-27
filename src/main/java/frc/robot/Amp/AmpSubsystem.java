@@ -13,8 +13,8 @@ public class AmpSubsystem extends SubsystemBase {
         motor = new WPI_VictorSPX(15);
     }
 
-    public void shoot(boolean direction, boolean onOff) {
-        if(!onOff) {
+    public void shoot(boolean direction, boolean off) {
+        if(off) {
             motor.set(ControlMode.PercentOutput, 0);
             return;
         }
