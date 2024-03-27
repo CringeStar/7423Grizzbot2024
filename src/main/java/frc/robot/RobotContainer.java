@@ -29,4 +29,8 @@ public class RobotContainer {
         pigeonIMU.getYawPitchRoll(ypr); // Get yaw, pitch, and roll from the Pigeon IMU
         return ypr[0]; // Return yaw (heading)
     }
+
+    public PigeonIMU getPigeonIMU() {
+        return this.pigeonIMU;
+    }
 }

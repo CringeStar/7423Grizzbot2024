@@ -16,8 +16,8 @@ public class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
 
     // Swerve Drive constants
-    public static final double MAX_DRIVE_SPEED = 1.0; // Max drive speed
-    public static final double MAX_TURN_SPEED = 0.5; // Max turning speed
+    public static final double MAX_DRIVE_SPEED = 1.0*0.75; // Max drive speed
+    public static final double MAX_TURN_SPEED = 1.0; // Max turning spee
 
     public static final Translation2d FRONT_LEFT_LOCATION = new Translation2d(0.5, 0.5);
     public static final Translation2d FRONT_RIGHT_LOCATION = new Translation2d(0.5, -0.5);
