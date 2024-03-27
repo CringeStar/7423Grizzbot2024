@@ -11,7 +11,8 @@ public class Robot extends TimedRobot {
     private Joystick leftTrigger;
     private Joystick rightTrigger;
     private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
-
+    private final AmpSubsystem amp = new AmpSubsystem();
+    
     @Override
     public void autonomousInit(){
         RobotContainer.getInstance().getPigeonIMU().setYaw(180);
@@ -30,14 +31,7 @@ public class Robot extends TimedRobot {
         double strafe = driverController.getLeftX() * Constants.MAX_DRIVE_SPEED;
         double rotation = driverController.getRightX() * Constants.MAX_TURN_SPEED;
         boolean cancelGyro = driverController.getBackButton();
-
-
-        // boolean flywheelDir = driverController.getRightBumper();
-        // if(driverController.getLeftBumper()) {
-        //     flywheelDir = !flywheelDir;
-        // }
-        // boolean flywheelOff = driverController.getYButton();
-
+    
 
         boolean flywheelDir = rightTrigger.getAsBoolean();
         if(leftTrigger.getAsBoolean()) {
@@ -46,6 +40,14 @@ public class Robot extends TimedRobot {
         boolean flywheelRampUp = driverController.getRightBumper();
         boolean flywheelOff = driverController.getBButton();
 
+        // boolean ampDir = ;
+        // if() {
+        //     ampDir = !ampDir;
+        // }
+        // boolean ampOff = ;
+
+
+        
 
         boolean climber = driverController.getXButton();
 
@@ -54,6 +56,7 @@ public class Robot extends TimedRobot {
             RobotContainer.getInstance().getPigeonIMU().setYaw(0);
         }
         flywheel.shoot(flywheelDir, flywheelOff, flywheelRampUp);
+        // amp.shoot(ampDir, ampOff);
         swerveDrive.drive(forward, strafe, rotation);
         SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
