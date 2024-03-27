@@ -14,7 +14,6 @@ public class Robot extends TimedRobot {
     private final AmpSubsystem amp = new AmpSubsystem();
     private final ClimberSubsystem climber = new ClimberSubsystem();
 
-    
     @Override
     public void autonomousInit(){
         RobotContainer.getInstance().getPigeonIMU().setYaw(180);
@@ -23,7 +22,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
     }
-
 
     @Override
     public void teleopPeriodic() {
@@ -42,6 +40,7 @@ public class Robot extends TimedRobot {
         boolean flywheelRampUp = driverController.getRightBumper();
         boolean flywheelOff = driverController.getBButton();
 
+        
         boolean ampDir = driverController.getAButton();
         if(driverController.getXButton()) {
             ampDir = !ampDir;
@@ -49,25 +48,23 @@ public class Robot extends TimedRobot {
         boolean ampOff = !(driverController.getXButton()) && !(driverController.getAButton());
 
 
-        
-
-        boolean climber = driverController.getYButton();
+        boolean climberOn = driverController.getYButton();
 
 
         if(cancelGyro) {
             RobotContainer.getInstance().getPigeonIMU().setYaw(0);
         }
+
+        
         flywheel.shoot(flywheelDir, flywheelOff, flywheelRampUp);
         amp.shoot(ampDir, ampOff);
         swerveDrive.drive(forward, strafe, rotation);
 
-        // add code to check time ingame and then only climb if endgame
-
-        
-        SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
+        if(DriverStation.getMatchTime() < 15) { //assuming last 25 second of 2:15 teleop is endgame
+            climber.climb(climberOn);
+        }
+        // SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
-
-    // Optionally include autonomousPeriodic, disabledInit, etc.
 }
 
 
