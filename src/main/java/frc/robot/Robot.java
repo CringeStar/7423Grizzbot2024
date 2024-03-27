@@ -12,6 +12,8 @@ public class Robot extends TimedRobot {
     private Joystick rightTrigger;
     private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
     private final AmpSubsystem amp = new AmpSubsystem();
+    private final ClimberSubsystem climber = new ClimberSubsystem();
+
     
     @Override
     public void autonomousInit(){
@@ -58,6 +60,10 @@ public class Robot extends TimedRobot {
         flywheel.shoot(flywheelDir, flywheelOff, flywheelRampUp);
         amp.shoot(ampDir, ampOff);
         swerveDrive.drive(forward, strafe, rotation);
+
+        // add code to check time ingame and then only climb if endgame
+
+        
         SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
 
