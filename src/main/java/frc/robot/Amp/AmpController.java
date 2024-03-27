@@ -1,7 +1,5 @@
 package frc.robot.Amp;
 
-import frc.robot.Flywheel.Flywheel;
-
 public class AmpController {
     private Amp amp;
 
