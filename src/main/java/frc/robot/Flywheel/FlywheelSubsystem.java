@@ -45,12 +45,17 @@ public class FlywheelSubsystem extends SubsystemBase {
         double velocity1 = 0.0;
         double velocity2 = 0.0;
 
-        if (onOff) {
-            velocity1 = direction ? pidController1.calculate(bottomMotor.getEncoder().getVelocity(), kSetpoint) :
-                                    -pidController1.calculate(bottomMotor.getEncoder().getVelocity(), kSetpoint);
-            velocity2 = direction ? pidController2.calculate(topMotor.getEncoder().getVelocity(), kSetpoint) :
-                                    -pidController2.calculate(topMotor.getEncoder().getVelocity(), kSetpoint);
+        if (!onOff) {
+            bottomMotor.set(0);
+            topMotor.set(0);
+            return;
         }
+        
+        velocity1 = direction ? pidController1.calculate(bottomMotor.getEncoder().getVelocity(), kSetpoint) :
+                                    -pidController1.calculate(bottomMotor.getEncoder().getVelocity(), kSetpoint);
+        velocity2 = direction ? pidController2.calculate(topMotor.getEncoder().getVelocity(), kSetpoint) :
+                                    -pidController2.calculate(topMotor.getEncoder().getVelocity(), kSetpoint);
+        
 
         double output1 = feedforward.calculate(kSetpoint) + velocity1;
         double output2 = feedforward.calculate(kSetpoint) + velocity2;
@@ -61,8 +66,8 @@ public class FlywheelSubsystem extends SubsystemBase {
             return;
         }
 
-        bottomMotor.set(onOff ? limitOutput(output1) : 0.0);
-        topMotor.set(onOff ? limitOutput(output2) : 0.0);
+        bottomMotor.set(limitOutput(output1));
+        topMotor.set(limitOutput(output2));
     }
 
     private double limitOutput(double output) {
