@@ -14,7 +14,7 @@ public class Amp {
 
     public void setSpeed(double speed) {
         // Set flywheel speed using PID control for both motors
-        motor.set(ControlMode.Current, speed);
+        motor.set(ControlMode.PercentOutput, speed);
     }
     
 }
