@@ -7,14 +7,19 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 public class AmpSubsystem extends SubsystemBase {
 
 
-    private WPI_VictorSPX bottomMotor;
+    private WPI_VictorSPX motor;
 
     public AmpSubsystem() {
-        bottomMotor = new WPI_VictorSPX(15);
+        motor = new WPI_VictorSPX(15);
     }
 
     public void shoot(boolean direction, boolean onOff) {
-
+        if(!onOff) {
+            motor.set(ControlMode.PercentOutput, 0);
+            return;
+        }
+        if(direction){
+        }
     }
 
 }
