@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
 
         boolean flywheelDir = rightTrigVal;
         if(leftTrigVal) {
-            flywheelDir = !flywheelDir;
+            flywheelDir = false;
         }
         boolean flywheelRampUp = driverController.getHID().getRightBumper();
         boolean flywheelOff = false;
@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
         
         boolean ampDir = driverController.getHID().getAButton();
         if(driverController.getHID().getXButton()) {
-            ampDir = !ampDir;
+            ampDir = false;
         }
         boolean ampOff = !(driverController.getHID().getXButton()) && !(driverController.getHID().getAButton());
 

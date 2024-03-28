@@ -66,6 +66,11 @@ public class FlywheelSubsystem extends SubsystemBase {
             return;
         }
 
+        if(!direction) {
+            output1 *= -1;
+            output2 *= -1;
+        }
+
         bottomMotor.set(limitOutput(output1));
         topMotor.set(limitOutput(output2));
     }
