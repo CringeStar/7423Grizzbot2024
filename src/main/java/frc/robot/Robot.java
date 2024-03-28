@@ -40,13 +40,21 @@ public class Robot extends TimedRobot {
         double rotation = driverController.getRightX() * Constants.MAX_TURN_SPEED;
         boolean cancelGyro = driverController.getHID().getBackButton();
     
+        boolean rightTrigVal = driverController.rightTrigger(0.25).getAsBoolean();
+        boolean leftTrigVal = driverController.leftTrigger(0.25).getAsBoolean();
 
-        boolean flywheelDir = driverController.rightTrigger(0.25).getAsBoolean();
-        if(driverController.leftTrigger(0.25).getAsBoolean()) {
+
+        boolean flywheelDir = rightTrigVal;
+        if(leftTrigVal) {
             flywheelDir = !flywheelDir;
         }
         boolean flywheelRampUp = driverController.getHID().getRightBumper();
-        boolean flywheelOff = driverController.getHID().getBButton();
+        boolean flywheelOff = false;
+        if(!leftTrigVal && !rightTrigVal && !flywheelRampUp) {
+            flywheelOff = true;
+        } else {
+            flywheelOff = driverController.getHID().getBButton();
+        }
 
         
         boolean ampDir = driverController.getHID().getAButton();
@@ -68,7 +76,7 @@ public class Robot extends TimedRobot {
         amp.shoot(ampDir, ampOff);
         swerveDrive.drive(forward, strafe, rotation);
 
-        if(DriverStation.getMatchTime() < 15) { //assuming last 25 second of 2:15 teleop is endgame
+        if(DriverStation.getMatchTime() < 15) { //assuming last 15 second of 2:15 teleop is endgame
             climber.climb(climberOn);
         }
         // SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
