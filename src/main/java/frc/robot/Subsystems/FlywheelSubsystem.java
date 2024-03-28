@@ -1,4 +1,4 @@
-package frc.robot.Flywheel;
+package frc.robot.Subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;

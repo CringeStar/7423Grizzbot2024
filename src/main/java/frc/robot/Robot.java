@@ -1,15 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Flywheel.FlywheelSubsystem;
+import frc.robot.Subsystems.*;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class Robot extends TimedRobot {
     private final SwerveDriveSubsystem swerveDrive = new SwerveDriveSubsystem();
-    private final XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_PORT);
-    private Joystick leftTrigger;
-    private Joystick rightTrigger;
+    private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
     private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
     private final AmpSubsystem amp = new AmpSubsystem();
     private final ClimberSubsystem climber = new ClimberSubsystem();
@@ -37,30 +35,28 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        leftTrigger = new JoystickButton(controller, XboxController.Button.kLeftTrigger.value);
-        rightTrigger =  = new JoystickButton(controller, XboxController.Button.kLRightTrigger.value);
         double forward = driverController.getLeftY() * Constants.MAX_DRIVE_SPEED; 
         double strafe = driverController.getLeftX() * Constants.MAX_DRIVE_SPEED;
         double rotation = driverController.getRightX() * Constants.MAX_TURN_SPEED;
-        boolean cancelGyro = driverController.getBackButton();
+        boolean cancelGyro = driverController.getHID().getBackButton();
     
 
-        boolean flywheelDir = rightTrigger.getAsBoolean();
-        if(leftTrigger.getAsBoolean()) {
+        boolean flywheelDir = driverController.getRightTriggerAxis() != 0;
+        if(driverController.getLeftTriggerAxis() != 0) {
             flywheelDir = !flywheelDir;
         }
-        boolean flywheelRampUp = driverController.getRightBumper();
-        boolean flywheelOff = driverController.getBButton();
+        boolean flywheelRampUp = driverController.getHID().getRightBumper();
+        boolean flywheelOff = driverController.getHID().getBButton();
 
         
-        boolean ampDir = driverController.getAButton();
-        if(driverController.getXButton()) {
+        boolean ampDir = driverController.getHID().getAButton();
+        if(driverController.getHID().getXButton()) {
             ampDir = !ampDir;
         }
-        boolean ampOff = !(driverController.getXButton()) && !(driverController.getAButton());
+        boolean ampOff = !(driverController.getHID().getXButton()) && !(driverController.getHID().getAButton());
 
 
-        boolean climberOn = driverController.getYButton();
+        boolean climberOn = driverController.getHID().getYButton();
 
 
         if(cancelGyro) {

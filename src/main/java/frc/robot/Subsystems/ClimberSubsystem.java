@@ -1,7 +1,8 @@
-package frc.robot;
+package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class ClimberSubsystem extends SubsystemBase {
