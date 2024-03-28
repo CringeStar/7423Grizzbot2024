@@ -20,9 +20,9 @@ public class AmpSubsystem extends SubsystemBase {
             return;
         }
         if(direction){
-            motor.set(ControlMode.PercentOutput, 1);
+            motor.set(ControlMode.PercentOutput, 0.25);
         } else {
-            motor.set(ControlMode.PercentOutput, -1);
+            motor.set(ControlMode.PercentOutput, -0.25);
         }
     }
 }

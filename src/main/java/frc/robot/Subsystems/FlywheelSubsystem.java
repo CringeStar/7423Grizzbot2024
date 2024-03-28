@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 @SuppressWarnings("removal")
 public class FlywheelSubsystem extends SubsystemBase {
@@ -46,6 +47,8 @@ public class FlywheelSubsystem extends SubsystemBase {
         double velocity2 = 0.0;
 
         if (Off) {
+            topMotor.setIdleMode(IdleMode.kBrake);
+            bottomMotor.setIdleMode(IdleMode.kBrake);
             bottomMotor.set(0);
             topMotor.set(0);
             return;
@@ -71,6 +74,8 @@ public class FlywheelSubsystem extends SubsystemBase {
             output2 *= -1;
         }
 
+        topMotor.setIdleMode(IdleMode.kCoast);
+        bottomMotor.setIdleMode(IdleMode.kCoast);
         bottomMotor.set(limitOutput(output1));
         topMotor.set(limitOutput(output2));
     }
