@@ -41,11 +41,11 @@ public class FlywheelSubsystem extends SubsystemBase {
         feedforward = new SimpleMotorFeedforward(kF, 0.2);
     }
 
-    public void shoot(boolean direction, boolean onOff, boolean flywheelRampUp) {
+    public void shoot(boolean direction, boolean Off, boolean flywheelRampUp) {
         double velocity1 = 0.0;
         double velocity2 = 0.0;
 
-        if (!onOff) {
+        if (Off) {
             bottomMotor.set(0);
             topMotor.set(0);
             return;
