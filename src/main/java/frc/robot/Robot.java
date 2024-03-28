@@ -10,7 +10,7 @@ public class Robot extends TimedRobot {
     private final CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
     private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
     private final AmpSubsystem amp = new AmpSubsystem();
-    private final ClimberSubsystem climber = new ClimberSubsystem();
+    // private final ClimberSubsystem climber = new ClimberSubsystem();
 
     @Override
     public void autonomousInit(){
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
         boolean ampOff = !(driverController.getHID().getXButton()) && !(driverController.getHID().getAButton());
 
 
-        boolean climberOn = driverController.getHID().getYButton();
+        // boolean climberOn = driverController.getHID().getYButton();
 
 
         if(cancelGyro) {
@@ -76,9 +76,9 @@ public class Robot extends TimedRobot {
         amp.shoot(ampDir, ampOff);
         swerveDrive.drive(forward, strafe, rotation);
 
-        if(DriverStation.getMatchTime() < 15) { //assuming last 15 second of 2:15 teleop is endgame
-            climber.climb(climberOn);
-        }
+        // if(DriverStation.getMatchTime() < 15) { //assuming last 15 second of 2:15 teleop is endgame
+        //     climber.climb(climberOn);
+        // }
         // SmartDashboard.putNumber("pigeon oreintation", RobotContainer.getInstance().getPigeonHeading());
     }
 }
